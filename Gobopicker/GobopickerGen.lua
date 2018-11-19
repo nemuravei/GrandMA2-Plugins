@@ -1,6 +1,6 @@
 -- Gobopicker
 -- created by: Leo Kuenne
--- Version: 1
+-- Version: 0.5
 -- State: Alpha
 -- Desc:
 -- This plugin generates the macros for the gobopicker
