@@ -92,6 +92,7 @@ function start()
 --                        end
 --                    end
 --                    
+
 --                    gma.cmd('Store Seq '..(i_startseq+2)..' Cue '..(i+1)..'; ');
 --                    gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"'..s_cmdline..'\" ;');
 --                    gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /name= \"'..((i ~= 0) and (''..(i+1)..'..-'..(i+1)..'') or 'None'  )..'\" ;');
@@ -127,9 +128,7 @@ function start()
 end
 
 function cleanUP()
-    
     gma.echo('CleanUp called');
-
 end
 
 return start, cleanUP();
