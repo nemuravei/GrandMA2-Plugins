@@ -100,7 +100,6 @@ function start()
 --                    gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /name= \"'..(i+1)..'\" ;');
 --                end
 --            end
---            
 --        end
 --        gma.cmd('Assign Seq '..(i_startseq+2)..' /name=\"Wings";');--
     end
