@@ -10,7 +10,6 @@
 
 -- ToDo:
 -- Instead of counts, define the items to modify the effects in string arrays
--- Generate Macros for the Wings Modifier. There is a limited char count in the cmdline of the cue.
 
 local getHandle = gma.show.getobj.handle
 
@@ -24,8 +23,7 @@ function start()
     if (not start) then
         goto EOF
     end
-
-
+    
     local i_startseq = 1;
     local i_startmacro = 1;
     
@@ -80,27 +78,32 @@ function start()
     
     
         for i = 0, i_wingscount do
+            gma.cmd('Store Macro 1.'..i_startmacro+i..'; Assign Macro 1.'..i_startmacro+i..' /name=\"Wings '..((i ~= 0) and (''..(i+1)..'..-'..(i+1)..'') or 'None'  )..'\"');
             if i == 0 then
-                gma.cmd('Store Seq '..(i_startseq+2)..' Cue '..(i+1)..'; Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"Assign Effect 1.'..i_effectitem..' Thru 1.'..i_effectitem + i_effectitemcount..' /wings='..i..'\" ;');
+                gma.cmd('Store Macro 1.'..i_startmacro+i..'.1; Assign Macro 1.'..i_startmacro+i..'.1 /cmd=\"Assign Effect 1.'..i_effectitem..' Thru 1.'..i_effectitem + i_effectitemcount..' /wings=0\"');
+            
+                gma.cmd('Store Seq '..(i_startseq+2)..' Cue '..(i+1)..'; Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"Go Macro '..i_startmacro..'\" ;');
                 gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /name= \"None\" ;');
             end
             
             if i > 0 then
                 if b_wingsWithSym == 1 then
-                    local s_cmdline = '';                    
+                    local s_cmdline = '';
                     for c = 0, (i_effectitemcount-1) do
                         for j = 1, (i_effectlines) do
                             if j % 2 == 0 then
-                                s_cmdline = s_cmdline..'Assign Effect 1.'..(i_effectitem+c)..'.'..(j)..' /wings='..(i+1)..'; ';
+                                s_cmdline = 'Assign Effect 1.'..(i_effectitem+c)..'.'..(j)..' /wings='..(i+1)..'; ';
+                                gma.cmd('Store Macro 1.'..i_startmacro+i..'.'..(c*i_effectlines)+j..'; Assign Macro 1.'..i_startmacro+i..'.'..(c*i_effectlines)+j..' /cmd=\"'..s_cmdline..'\"');
                             else
-                                s_cmdline = s_cmdline..'Assign Effect 1.'..(i_effectitem+c)..'.'..(j)..' /wings='..-(i+1)..'; ';
+                                s_cmdline = 'Assign Effect 1.'..(i_effectitem+c)..'.'..(j)..' /wings='..-(i+1)..'; ';
+                                gma.cmd('Store Macro 1.'..i_startmacro+i..'.'..(c*i_effectlines)+j..'; Assign Macro 1.'..i_startmacro+i..'.'..(c*i_effectlines)+j..' /cmd=\"'..s_cmdline..'\"');
                             end
                         end
                     end
                     
 
                     gma.cmd('Store Seq '..(i_startseq+2)..' Cue '..(i+1)..'; ');
-                    gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"'..s_cmdline..'\" ;');
+                    gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"Go Macro '..i_startmacro+i..'\" ;');
                     gma.cmd('Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /name= \"'..((i ~= 0) and (''..(i+1)..'..-'..(i+1)..'') or 'None'  )..'\" ;');
                 else
                     gma.cmd('Store Seq '..(i_startseq+2)..' Cue '..(i+1)..'; Assign Seq '..(i_startseq+2)..' Cue '..(i+1)..' /cmd= \"Assign Effect 1.'..i_effectitem..' Thru 1.'..i_effectitem + i_effectitemcount..' /wings='..(i+1)..'\" ;');
